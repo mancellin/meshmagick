@@ -1190,7 +1190,7 @@ class Mesh(object):
             if math.fabs(a0) < tol and math.fabs(a1) < tol and math.fabs(a2) < tol:
                 conformal = False
 
-            return conformal
+        return conformal
 
     def rotate_x(self, thetax):
         """Rotates the mesh around Ox axis.
