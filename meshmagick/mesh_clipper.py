@@ -4,6 +4,7 @@
 """This module holds a tools to clip meshes against a plane"""
 
 from .mesh import *
+from .geometry import *
 
 
 class MeshClipper(object):
