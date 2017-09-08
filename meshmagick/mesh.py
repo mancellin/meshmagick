@@ -16,7 +16,7 @@ from warnings import warn
 
 from meshmagick.tools import merge_duplicate_rows
 from meshmagick.inertia import RigidBodyInertia
-from meshmagick.geometry import *
+from meshmagick.geometry import Plane
 from meshmagick.MMviewer import MMViewer
 
 __author__ = "Francois Rongere"
@@ -586,13 +586,18 @@ class Mesh(object):
 
         # Plot normal vectors.
         # TODO: this is Python 3 only syntax...
-        # ax.quiver(*zip(*self.faces_centers), *zip(*self.faces_normals), length=0.2)
+        ax.quiver(*zip(*self.faces_centers), *zip(*self.faces_normals), length=0.2)
 
         plt.xlabel("x")
         plt.ylabel("y")
-        plt.xlim(min(self.vertices[:, 0]), max(self.vertices[:, 0]))
-        plt.ylim(min(self.vertices[:, 1]), max(self.vertices[:, 1]))
-        plt.gca().set_zlim(min(self.vertices[:, 2]), max(self.vertices[:, 2]))
+
+        # Dirty trick for orthonormal axes
+        span = 1.05*max([max(self.vertices[:, j]) - min(self.vertices[:, j]) for j in range(3)])
+        centers = [(max(self.vertices[:, j]) + min(self.vertices[:, j]))/2 for j in range(3)]
+        plt.xlim(centers[0] - span/2, centers[0] + span/2)
+        plt.ylim(centers[1] - span/2, centers[1] + span/2)
+        plt.gca().set_zlim(centers[2] - span/2, centers[2] + span/2)
+
         plt.show()
 
     def _connectivity(self):
@@ -928,7 +933,7 @@ class Mesh(object):
         if self.has_surface_integrals():
             self._remove_surface_integrals()
         # TODO: docstring
-        # FIXME : code en doublon par rapport a la fonction _rodrigues du debut de module
+        # FIXME : code en doublon par rapport a la fonction _rodrigues du module geometry
         
         angles = np.asarray(angles, dtype=np.float)
         theta = np.linalg.norm(angles)
