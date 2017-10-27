@@ -531,12 +531,12 @@ class Mesh(object):
         # TODO: placer cette methode dans MMviewer !!
         # Create a vtkPoints object and store the points in it
         points = vtk.vtkPoints()
-        for point in self._vertices:
+        for point in self.vertices:
             points.InsertNextPoint(point)
 
         # Create a vtkCellArray to store faces
         faces = vtk.vtkCellArray()
-        for face_ids in self._faces:
+        for face_ids in self.faces:
             if face_ids[0] == face_ids[-1]:
                 # Triangle
                 curface = face_ids[:3]
@@ -1020,11 +1020,11 @@ class Mesh(object):
             translation vector
         """
         tx, ty, tz = t
-        V = self._vertices.copy() # FIXME: why doing a copy ???
+        V = self.vertices.copy() # FIXME: why doing a copy ???
         V[:, 0] += tx
         V[:, 1] += ty
         V[:, 2] += tz
-        self._vertices = V
+        self.vertices = V
 
         # Updating properties if any
         if self._has_faces_properties():
