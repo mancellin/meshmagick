@@ -31,7 +31,7 @@ setup(
     install_requires=['numpy'],
     entry_points={
         'console_scripts': [
-            'meshmagick=meshmagick:main',
+            'meshmagick=meshmagick.meshmagick:main',
         ],
     },
     classifiers=[
