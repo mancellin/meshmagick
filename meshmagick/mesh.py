@@ -14,10 +14,10 @@ import vtk
 from itertools import count
 from warnings import warn
 
-from .tools import merge_duplicate_rows
-from .inertia import RigidBodyInertia
-from .geometry import *
-from .MMviewer import MMViewer
+from meshmagick.tools import merge_duplicate_rows
+from meshmagick.inertia import RigidBodyInertia
+from meshmagick.geometry import *
+from meshmagick.MMviewer import MMViewer
 
 __author__ = "Francois Rongere"
 __copyright__ = "Copyright 2014-2015, Ecole Centrale de Nantes"

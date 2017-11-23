@@ -5,7 +5,7 @@
 import numpy as np
 import math
 
-from .mesh_clipper import MeshClipper
+from meshmagick.mesh_clipper import MeshClipper
 
 __author__ = "Francois Rongere"
 __copyright__ = "Copyright 2014-2015, Ecole Centrale de Nantes"

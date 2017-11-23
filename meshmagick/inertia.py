@@ -6,7 +6,7 @@ import numpy as np
 from math import pi, sqrt
 from copy import deepcopy
 
-from . import densities
+from meshmagick import densities
 
 # FIXME: attention, changer les signes pour les produits d'inertie !
 # TODO: ajouter la production d'inerties de solides connus --> utile pour comparaison !!
