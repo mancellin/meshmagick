@@ -12,9 +12,8 @@ requirements:
     - setuptools
   run:
     - python
-    - vtk >=5
+    # - vtk >=7
     - numpy
-    - argcomplete
 
 build:
   entry_points:
