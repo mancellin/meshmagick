@@ -566,7 +566,7 @@ class Mesh(object):
         self.viewer.show()
         self.viewer.finalize()
 
-    def show_matplotlib(self):
+    def show_matplotlib(self, normal_vectors=False):
         """Poor man's viewer with matplotlib
         To be deleted when the VTK viewer is fully working with Python 3?"""
         import matplotlib.pyplot as plt
@@ -586,7 +586,8 @@ class Mesh(object):
 
         # Plot normal vectors.
         # TODO: this is Python 3 only syntax...
-        ax.quiver(*zip(*self.faces_centers), *zip(*self.faces_normals), length=0.2)
+        if normal_vectors:
+            ax.quiver(*zip(*self.faces_centers), *zip(*self.faces_normals), length=0.2)
 
         plt.xlabel("x")
         plt.ylabel("y")
