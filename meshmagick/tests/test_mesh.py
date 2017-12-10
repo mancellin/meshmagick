@@ -18,6 +18,9 @@ def test_plane():
     plane.set_normal_from_angles(0., 0.)
     plane.get_normal_orientation_wrt_z()
     
+    other_plane = Plane()
+    assert other_plane == plane
+
     plane.flip_normal()
     plane.coord_in_plane(cylinder.vertices)
     try:

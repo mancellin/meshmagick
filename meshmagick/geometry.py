@@ -149,7 +149,14 @@ class Plane(object):
         str_repr = "Plane{normal=[%f, %f, %f], scalar=%f}" % \
                    (self._normal[0], self._normal[1], self._normal[2], self._scalar)
         return str_repr
-    
+
+    def __eq__(self, other):
+        if isinstance(other, Plane):
+            return (np.isclose(self.c, other.c, atol=1e-5) and
+                    np.isclose(self.normal @ other.normal, 1.0, atol=1e-5))
+        else:
+            raise NotImplemented()
+
     @property
     def normal(self):
         """Get the plane's normal"""
