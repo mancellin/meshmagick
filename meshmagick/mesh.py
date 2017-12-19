@@ -566,9 +566,16 @@ class Mesh(object):
         self.viewer.show()
         self.viewer.finalize()
 
-    def show_matplotlib(self, normal_vectors=False):
-        """Poor man's viewer with matplotlib
-        To be deleted when the VTK viewer is fully working with Python 3?"""
+    def show_matplotlib(self, normal_vectors=False, scale_normal_vector=None):
+        """Poor man's viewer with matplotlib.
+
+        Parameters
+        ----------
+        normal_vector: bool
+            If True, print normal vector.
+        scale_normal_vector: array of shape (nb_faces, )
+            Scale separately each of the normal vectors.
+        """
         import matplotlib.pyplot as plt
         from mpl_toolkits.mplot3d import Axes3D
         from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -585,9 +592,13 @@ class Mesh(object):
         ax.add_collection3d(Poly3DCollection(faces, facecolor=(0.3, 0.3, 0.3, 0.3), edgecolor='k'))
 
         # Plot normal vectors.
-        # TODO: this is Python 3 only syntax...
         if normal_vectors:
-            ax.quiver(*zip(*self.faces_centers), *zip(*self.faces_normals), length=0.2)
+            vectors = self.faces_normals
+            if scale_normal_vector is not None:
+                for i in range(3):
+                    vectors[:, i] = scale_normal_vector * self.faces_normals[:, i]
+            # NB: this is Python 3 only syntax...
+            ax.quiver(*zip(*self.faces_centers), *zip(*vectors), length=0.2)
 
         plt.xlabel("x")
         plt.ylabel("y")
