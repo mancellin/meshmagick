@@ -593,10 +593,10 @@ class Mesh(object):
 
         # Plot normal vectors.
         if normal_vectors:
-            vectors = self.faces_normals
             if scale_normal_vector is not None:
-                for i in range(3):
-                    vectors[:, i] = scale_normal_vector * self.faces_normals[:, i]
+                vectors = (scale_normal_vector * self.faces_normals.T).T
+            else:
+                vectors = self.faces_normals
             # NB: this is Python 3 only syntax...
             ax.quiver(*zip(*self.faces_centers), *zip(*vectors), length=0.2)
 
