@@ -566,22 +566,30 @@ class Mesh(object):
         self.viewer.show()
         self.viewer.finalize()
 
-    def show_matplotlib(self, normal_vectors=False, scale_normal_vector=None):
+    def show_matplotlib(self, ax=None,
+                        normal_vectors=False, scale_normal_vector=None,
+                        **kwargs):
         """Poor man's viewer with matplotlib.
 
         Parameters
         ----------
+        ax: matplotlib axis
+            The 3d axis in which to plot the mesh. If not provided, create a new one.
         normal_vector: bool
             If True, print normal vector.
         scale_normal_vector: array of shape (nb_faces, )
             Scale separately each of the normal vectors.
+
+        Other parameters are passed to Poly3DCollection.
         """
         import matplotlib.pyplot as plt
         from mpl_toolkits.mplot3d import Axes3D
         from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection="3d")
+        default_axis = ax is None
+        if default_axis:
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection="3d")
 
         faces = []
         for face in self.faces:
@@ -589,7 +597,11 @@ class Mesh(object):
             for index_vertex in face:
                 vertices.append(self.vertices[int(index_vertex), :])
             faces.append(vertices)
-        ax.add_collection3d(Poly3DCollection(faces, facecolor=(0.3, 0.3, 0.3, 0.3), edgecolor='k'))
+        if 'facecolors' not in kwargs:
+            kwargs['facecolors'] = (0.3, 0.3, 0.3, 0.3)
+        if 'edgecolor' not in kwargs:
+            kwargs['edgecolor'] = 'k'
+        ax.add_collection3d(Poly3DCollection(faces, **kwargs))
 
         # Plot normal vectors.
         if normal_vectors:
@@ -600,17 +612,18 @@ class Mesh(object):
             # NB: this is Python 3 only syntax...
             ax.quiver(*zip(*self.faces_centers), *zip(*vectors), length=0.2)
 
-        plt.xlabel("x")
-        plt.ylabel("y")
+        if default_axis:
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
 
-        # Dirty trick for orthonormal axes
-        span = 1.05*max([max(self.vertices[:, j]) - min(self.vertices[:, j]) for j in range(3)])
-        centers = [(max(self.vertices[:, j]) + min(self.vertices[:, j]))/2 for j in range(3)]
-        plt.xlim(centers[0] - span/2, centers[0] + span/2)
-        plt.ylim(centers[1] - span/2, centers[1] + span/2)
-        plt.gca().set_zlim(centers[2] - span/2, centers[2] + span/2)
+            # Dirty trick for orthonormal axes
+            span = 1.05*max([max(self.vertices[:, j]) - min(self.vertices[:, j]) for j in range(3)])
+            centers = [(max(self.vertices[:, j]) + min(self.vertices[:, j]))/2 for j in range(3)]
+            ax.set_xlim(centers[0] - span/2, centers[0] + span/2)
+            ax.set_ylim(centers[1] - span/2, centers[1] + span/2)
+            ax.set_zlim(centers[2] - span/2, centers[2] + span/2)
 
-        plt.show()
+            plt.show()
 
     def _connectivity(self):
         """Updates the connectivities of the mesh.
