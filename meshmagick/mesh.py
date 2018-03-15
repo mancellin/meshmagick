@@ -387,6 +387,42 @@ class Mesh(object):
             self._faces_properties()
         return self.__internals__['faces_normals']
 
+    @property
+    def faces_radiuses(self):
+        """Get the array of faces radiuses of the mesh.
+        
+        Returns
+        -------
+        ndarray
+        """
+        if 'faces_radiuses' not in self.__internals__:
+            self._compute_radiuses()
+        return self.__internals__['faces_radiuses']
+
+    def _compute_radiuses(self):
+        """Compute the radiuses of the faces of the mesh.
+
+        The radius is defined here as the maximal distance between the center
+        of mass of a cell and one of its points."""
+
+        # Coordinates of all the vertices grouped by face
+        faces_vertices = self.vertices[self.faces, :]
+        # faces_vertices.shape == (nb_faces, 4, 3)
+
+        # Reorder the axes for array broadcasting below
+        faces_vertices = np.moveaxis(faces_vertices, 0, 1)
+        # faces_vertices.shape == (4, nb_faces, 3)
+
+        # Get all the vectors between the center of faces and their vertices.
+        radial_vector = self.faces_centers - faces_vertices
+        # radial_vector.shape == (4, nb_faces, 3)
+
+        # Keep the maximum length
+        faces_radiuses = np.max(np.linalg.norm(radial_vector, axis=2), axis=0)
+        # faces_radiuses.shape = (nb_faces)
+
+        self.__internals__["faces_radiuses"] = faces_radiuses
+
     def _triangles_quadrangles(self):
         triangle_mask = (self._faces[:, 0] == self._faces[:, -1])
         quadrangles_mask = np.invert(triangle_mask)
