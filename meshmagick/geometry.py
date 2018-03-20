@@ -356,3 +356,9 @@ class Plane(object):
         """Get the coordinates of the plane's origin"""
         return self.c * self.normal
 
+
+# Useful aliases
+yOz_Plane = Plane(normal=(1.0, 0.0, 0.0), scalar=0.0)
+xOz_Plane = Plane(normal=(0.0, 1.0, 0.0), scalar=0.0)
+xOy_Plane = Plane(normal=(0.0, 0.0, 1.0), scalar=0.0)
+
