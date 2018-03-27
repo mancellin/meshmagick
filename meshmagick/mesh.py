@@ -1252,15 +1252,23 @@ class Mesh(object):
 
         return new_mesh
 
-    def copy(self):
+    def copy(self, name=None):
         """Get a copy of the current mesh instance.
+
+        Parameters
+        ----------
+        name : string, optional
+            a new name for the new mesh
         
         Returns
         -------
         Mesh
             mesh instance copy
         """
-        return copy.deepcopy(self)
+        new_mesh = copy.deepcopy(self)
+        if name is not None:
+            new_mesh.name = name
+        return new_mesh
 
     def merge_duplicates(self, atol=1e-8, return_index=False):
         """Merges the duplicate vertices of the mesh.
