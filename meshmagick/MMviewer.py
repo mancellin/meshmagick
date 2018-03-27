@@ -106,8 +106,8 @@ class MMViewer:
         plane = vtk.vtkPlaneSource()
         (xmin, xmax, ymin, ymax, _, _) = pd.GetBounds()
         
-        dx = 0.1 * (xmax - xmin)
-        dy = 0.1 * (ymax - ymin)
+        dx = max(0.1 * (xmax - xmin), 0.1)
+        dy = max(0.1 * (ymax - ymin), 0.1)
 
         plane.SetOrigin(xmin - dx, ymax + dy, 0)
         plane.SetPoint1(xmin - dx, ymin - dy, 0)
