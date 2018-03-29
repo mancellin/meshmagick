@@ -340,15 +340,6 @@ class MMViewer:
             normals_at_centers = vtk.vtkCellCenters()
             normals_at_centers.SetInputConnection(normals.GetOutputPort())
 
-            normals_mapper = vtk.vtkPolyDataMapper()
-            if vtk.VTK_MAJOR_VERSION <= 5:
-                normals_output = normals.GetOutput()
-                normals_mapper.SetInput(normals_output)
-            else:
-                normals_mapper.SetInputData(normals.GetOutput())
-            normals_actor = vtk.vtkActor()
-            normals_actor.SetMapper(normals_mapper)
-
             arrows = vtk.vtkArrowSource()
             arrows.SetTipResolution(16)
             arrows.SetTipLength(0.5)
