@@ -28,7 +28,7 @@ setup(
     packages=find_packages(exclude=['contrib', 'doc', 'tests*']),
     # setup_requires=['pytest-runner'],
     # tests_require=['pytest', 'pytest-cov'],
-    install_requires=['numpy', 'argcomplete'],
+    install_requires=['numpy', 'argcomplete', 'vtk'],
     entry_points={
         'console_scripts': [
             'meshmagick=meshmagick:main',
